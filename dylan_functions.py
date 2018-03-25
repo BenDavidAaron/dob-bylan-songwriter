@@ -43,7 +43,10 @@ def tokenize_per_character(document, encode=False,
 				y = lookup_table[y]
 		x_data.append(x)
 		y_data.append(y)
-	return {"y": y_data, "x": x_data}
+
+	x_arr = np.array(x_data)
+	y_arr = np.array(y_data)
+	return {"y": y_arr, "x": x_arr, "lookup": lookup_table}
 
 
 #Tests below:
@@ -51,10 +54,9 @@ doc = open('cleaned text.txt','r').read()
 
 looker = get_lookup_table(doc)
 
-data = tokenize_per_character(doc, encode=True, sequence_length=10)
+data = tokenize_per_character(doc, encode=False, lookup_table=looker, sequence_length=10)
 
-text_x = data['x']
-test_y = data['y']
+print(data)
 
-for x, y in zip(text_x[:10], test_y[:10]):
-	print(x, y)
+
+
