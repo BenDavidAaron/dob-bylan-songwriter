@@ -43,20 +43,21 @@ def tokenize_per_character(document, encode=False,
 				y = lookup_table[y]
 		x_data.append(x)
 		y_data.append(y)
+		n_points = len(x_data)
+		x_arr = np.reshape(x_data, (n_points, sequence_length, 1))
+		x_arr = x_arr / len(lookup_table)
+		y_arr = np.array(y_data)
 
-	x_arr = np.array(x_data)
-	y_arr = np.array(y_data)
+	else:
+		x_arr = np.array(x_data)
+		y_arr = np.array(y_data)
 	return {"y": y_arr, "x": x_arr, "lookup": lookup_table}
 
 
 #Tests below:
-doc = open('cleaned text.txt','r').read()
-
-looker = get_lookup_table(doc)
-
-data = tokenize_per_character(doc, encode=False, lookup_table=looker, sequence_length=10)
-
-print(data)
-
-
-
+if __name__ == "__main__":
+	doc = open('cleaned text.txt','r').read()
+	looker = get_lookup_table(doc)
+	data = tokenize_per_character(doc, encode=False, lookup_table=looker, sequence_length=10)
+	print(data)
+	print(len(data['x']))
