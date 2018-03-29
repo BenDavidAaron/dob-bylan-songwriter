@@ -9,7 +9,7 @@ import pickle
 doc = open('cleaned text.txt','r').read()
 looker = get_lookup_table(doc)
 data = tokenize_per_character(doc, lookup_table=looker, sequence_length=10)
-pickle.dump(looker, open())
+pickle.dump(looker, open('lookup_table.pkl', 'wb'))
 
 
 X = data['x']

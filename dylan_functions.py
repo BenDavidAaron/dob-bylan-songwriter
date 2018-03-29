@@ -9,8 +9,17 @@ def get_lookup_table(document):
 	unique_chars = sorted(list(set(document)))
 	table = {}
 	for label, char in enumerate(unique_chars):
-		#table[label] = char
 		table[char] = label
+	return table
+
+def get_reverse_lookup_table(document):
+	"""Takes in a text document and returns a per index lookup table
+	returns as a dictionary
+	"""
+	unique_chars = sorted(list(set(document)))
+	table = {}
+	for label, char in enumerate(unique_chars):
+		table[label] = char
 	return table
 
 def tokenize_per_character(document, 
