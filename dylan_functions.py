@@ -51,7 +51,9 @@ def tokenize_per_character(document,
 	X = X / float(len(lookup_table))
 	#one-hot encode the outputs
 	y = np_utils.to_categorical(y_data)
-	return {"y": y, "x": X, "lookup": lookup_table}
+	return {"y": y, "x": X, 
+	"lookup": lookup_table, 
+	'x_raw': x_data, 'y_raw': y_data}
 
 
 
