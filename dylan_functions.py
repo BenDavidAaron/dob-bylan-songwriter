@@ -45,10 +45,23 @@ def tokenize_per_character(document,
 		x_data.append(x)
 		y_data.append(y)
 		n_points = len(x_data)
+	#reshape each training data point
 	X = np.reshape(x_data, (n_points, sequence_length, 1))
-
+	#normalize
+	X = X / float(len(lookup_table))
+	#one-hot encode the outputs
 	y = np_utils.to_categorical(y_data)
 	return {"y": y, "x": X, "lookup": lookup_table}
+
+
+
+
+
+
+
+
+
+
 
 
 #Tests below:
