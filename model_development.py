@@ -7,7 +7,7 @@ from keras.callbacks import ModelCheckpoint
 
 doc = open('cleaned text.txt','r').read()
 looker = get_lookup_table(doc)
-data = tokenize_per_character(doc, lookup_table=looker, sequence_length=10)
+data = tokenize_per_character(doc, lookup_table=looker, sequence_length=50)
 
 X = data['x']
 y = data['y']
@@ -17,12 +17,13 @@ y = data['y']
 model = Sequential()
 model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2])))
 model.add(Dropout(0.35))
+model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2])))
 model.add(Dense(y.shape[1], activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 
 # checkpoint this cause I'm gonna be here all day
-filepath="models/weights-improvement-{epoch:02d}-{loss:.4f}.hdf5"
+filepath="models/2-layer-dylan-net_epoch-{epoch:02d}-loss-{loss:.4f}.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='min')
 callbacks_list = [checkpoint]
 
-model.fit(X, y, epochs=10, batch_size=128, callbacks=callbacks_list)
+model.fit(X, y, epochs=50, batch_size=len(X), callbacks=callbacks_list)
