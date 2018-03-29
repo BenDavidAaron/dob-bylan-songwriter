@@ -4,13 +4,10 @@ from keras.layers import Dense
 from keras.layers import Dropout
 from keras.layers import LSTM
 from keras.callbacks import ModelCheckpoint
-import pickle
 
 doc = open('cleaned text.txt','r').read()
 looker = get_lookup_table(doc)
 data = tokenize_per_character(doc, lookup_table=looker, sequence_length=10)
-pickle.dump(looker, open('lookup_table.pkl', 'wb'))
-
 
 X = data['x']
 y = data['y']
