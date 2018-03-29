@@ -1,4 +1,6 @@
 import numpy as np
+from keras.utils import np_utils
+from tqdm import tqdm
 
 def get_lookup_table(document):
 	"""Takes in a text document and returns a per character lookup table
@@ -11,7 +13,7 @@ def get_lookup_table(document):
 		table[char] = label
 	return table
 
-def tokenize_per_character(document, encode=False, 
+def tokenize_per_character(document, 
 	lookup_table={}, sequence_length=10): 
 	"""This function yields tuples containing:
 	  a character at a given index in the `document` string
@@ -23,7 +25,7 @@ def tokenize_per_character(document, encode=False,
 	x_data = []
 	y_data = []
 	new_lookup_generated = False
-	for idx in range(document_length):
+	for idx in tqdm(range(document_length)):
 		if idx < sequence_length:
 			x_str = document[:idx].rjust(sequence_length)
 		else:
@@ -32,32 +34,27 @@ def tokenize_per_character(document, encode=False,
 		x = list(x_str)
 		y = document[idx]
 
-		if encode:
-			try:
-				x = [lookup_table[char] for char in x]
-				y = lookup_table[y]
-			except KeyError:
-				print(f"there was an unrecognized character in your document,\nA new table has been generated and can be accessed by checking key: \"lookup\" in the output")
-				lookup_table = get_lookup_table(document)
-				x = [lookup_table[char] for char in x]
-				y = lookup_table[y]
+		try:
+			x = [lookup_table[char] for char in x]
+			y = lookup_table[y]
+		except KeyError:
+			print(f"there was an unrecognized character in your document,\nA new table has been generated and can be accessed by checking key: \"lookup\" in the output")
+			lookup_table = get_lookup_table(document)
+			x = [lookup_table[char] for char in x]
+			y = lookup_table[y]
 		x_data.append(x)
 		y_data.append(y)
 		n_points = len(x_data)
-		x_arr = np.reshape(x_data, (n_points, sequence_length, 1))
-		x_arr = x_arr / len(lookup_table)
-		y_arr = np.array(y_data)
+	X = np.reshape(x_data, (n_points, sequence_length, 1))
 
-	else:
-		x_arr = np.array(x_data)
-		y_arr = np.array(y_data)
-	return {"y": y_arr, "x": x_arr, "lookup": lookup_table}
+	y = np_utils.to_categorical(y_data)
+	return {"y": y, "x": X, "lookup": lookup_table}
 
 
 #Tests below:
 if __name__ == "__main__":
 	doc = open('cleaned text.txt','r').read()
 	looker = get_lookup_table(doc)
-	data = tokenize_per_character(doc, encode=False, lookup_table=looker, sequence_length=10)
+	data = tokenize_per_character(doc, lookup_table=looker, sequence_length=10)
 	print(data)
 	print(len(data['x']))
