@@ -24,6 +24,7 @@ model = Sequential()
 model.add(LSTM(256, input_shape=(X.shape[1], X.shape[2])))
 model.add(Dropout(0.35))
 model.add(LSTM(256))
+model.add(Dropout(0.35))
 model.add(Dense(y.shape[1], activation='softmax'))
 
 filename = "" #model to load
