@@ -38,7 +38,7 @@ def tokenize_per_character(document,
 			x = [lookup_table[char] for char in x]
 			y = lookup_table[y]
 		except KeyError:
-			print(f"there was an unrecognized character in your document,\nA new table has been generated and can be accessed by checking key: \"lookup\" in the output")
+			print("there was an unrecognized character in your document,\nA new table has been generated and can be accessed by checking key: \"lookup\" in the output")
 			lookup_table = get_lookup_table(document)
 			x = [lookup_table[char] for char in x]
 			y = lookup_table[y]

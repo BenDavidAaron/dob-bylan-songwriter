@@ -1,3 +1,7 @@
+import os
+os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
+os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
 from dylan_functions import get_lookup_table, tokenize_per_character
 from keras.models import Sequential
 from keras.layers import Dense
@@ -7,7 +11,7 @@ from keras.callbacks import ModelCheckpoint
 
 doc = open('cleaned text.txt','r').read()
 looker = get_lookup_table(doc)
-data = tokenize_per_character(doc, lookup_table=looker, sequence_length=5)
+data = tokenize_per_character(doc, lookup_table=looker, sequence_length=20)
 
 X = data['x']
 y = data['y']
@@ -27,4 +31,4 @@ filepath="models/dylan-net_epoch-{epoch:02d}-loss-{loss:.4f}.hdf5"
 checkpoint = ModelCheckpoint(filepath, monitor='loss', verbose=1, save_best_only=True, mode='min')
 callbacks_list = [checkpoint]
 
-model.fit(X, y, epochs=1, batch_size=1, callbacks=callbacks_list)
+model.fit(X, y, epochs=10, batch_size=100, callbacks=callbacks_list)
