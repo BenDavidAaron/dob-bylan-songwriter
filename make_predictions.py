@@ -27,7 +27,7 @@ model.add(LSTM(256))
 model.add(Dropout(0.35))
 model.add(Dense(y.shape[1], activation='softmax'))
 
-filename = "" #model to load
+filename = "models/dylan-net_epoch-10-loss-2.0669.hdf5" #model to load
 model.load_weights(filename)
 model.compile(loss='categorical_crossentropy', optimizer='adam')
 
